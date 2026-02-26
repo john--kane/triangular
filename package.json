@@ -1,8 +1,8 @@
 {
   "name": "triangular",
-  "version": "22.0.0-next.0",
+  "version": "1.0.0",
   "private": true,
-  "description": "Software Development Kit for Angular",
+  "description": "Software Development Kit for Angular using a Rust compiler",
   "keywords": [
     "angular",
     "Angular CLI",
