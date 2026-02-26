@@ -10,7 +10,7 @@
   Any changes to README.md directly will result in a failure on CI.
 -->
 
-<h1 style="text-align: center">Triangular - The CLI tool for web developers.</h1>
+<h1 style="text-align: center">Triangular - The CLI tool for Angular projects</h1>
 
 <p style="text-align: center">
   <br>
@@ -18,19 +18,6 @@
   <br><br>
   <em>Triangular is a Rust-powered command-line interface tool that you use to initialize, develop, scaffold,
     <br>and maintain applications directly from a command shell with extreme performance.</em>
-  <br>
-</p>
-
-<p style="text-align: center">
-  <a href="CONTRIBUTING.md"><strong>Documentation</strong></a>
-  <br>
-</p>
-
-<p style="text-align: center">
-  <a href="CONTRIBUTING.md">Contributing Guidelines</a>
-  ·
-  <a href="https://github.com/john--kane/triangular/issues">Submit an Issue</a>
-  <br>
   <br>
 </p>
 
@@ -171,88 +158,3 @@ hyperfine --prepare 'rm -rf dist .angular' \
 `tri` focuses on speeding up the transpilation phase of the build. In large projects with many TypeScript files, you should see a noticeable decrease in the "Building..." phase of the CLI output.
 
 Triangular is a cross-platform, fast, scalable SDK powered by a Rust-based compiler toolchain (OXC). It is designed to be a high-performance alternative to traditional tools.
-
-## Quickstart
-
-[Get started in 5 minutes][quickstart].
-
-## Changelog
-
-[Learn about the latest improvements][changelog].
-
-## Contributing
-
-### Contributing Guidelines
-
-Read through our [contributing guidelines][contributing] to learn about our submission process, coding rules and more.
-
-### Want to Help?
-
-Want to report a bug, contribute some code, or improve documentation? Excellent! Read up on our guidelines for [contributing][contributing] and then check out one of our issues.
-
-### Code of Conduct
-
-Help us keep the community open and inclusive. Please read and follow our [Code of Conduct][codeofconduct].
-
-### Developer Guide
-
-Read through our [developer guide][developer] to learn about how to build and test the CLI locally.
-
-## Packages
-
-This is a monorepo which contains many tools and packages:
-
-
-
-### Tools
-
-| Project | Package | Version | Links |
-|---|---|---|---|
-**Angular Build System** | [`@angular/build`](https://npmjs.com/package/@angular/build) | [![latest](https://img.shields.io/npm/v/%40angular%2Fbuild/latest.svg)](https://npmjs.com/package/@angular/build) | [![README](https://img.shields.io/badge/README--green.svg)](/packages/angular/build/README.md) [![snapshot](https://img.shields.io/badge/snapshot--blue.svg)](https://github.com/angular/angular-build-builds)
-**Angular CLI** | [`@angular/cli`](https://npmjs.com/package/@angular/cli) | [![latest](https://img.shields.io/npm/v/%40angular%2Fcli/latest.svg)](https://npmjs.com/package/@angular/cli) | [![README](https://img.shields.io/badge/README--green.svg)](/packages/angular/cli/README.md) [![snapshot](https://img.shields.io/badge/snapshot--blue.svg)](https://github.com/angular/cli-builds)
-**Architect CLI** | [`@angular-devkit/architect-cli`](https://npmjs.com/package/@angular-devkit/architect-cli) | [![latest](https://img.shields.io/npm/v/%40angular-devkit%2Farchitect-cli/latest.svg)](https://npmjs.com/package/@angular-devkit/architect-cli) |  [![snapshot](https://img.shields.io/badge/snapshot--blue.svg)](https://github.com/angular/angular-devkit-architect-cli-builds)
-**Schematics CLI** | [`@angular-devkit/schematics-cli`](https://npmjs.com/package/@angular-devkit/schematics-cli) | [![latest](https://img.shields.io/npm/v/%40angular-devkit%2Fschematics-cli/latest.svg)](https://npmjs.com/package/@angular-devkit/schematics-cli) |  [![snapshot](https://img.shields.io/badge/snapshot--blue.svg)](https://github.com/angular/angular-devkit-schematics-cli-builds)
-
-
-### Packages
-
-
-| Project | Package | Version | Links |
-|---|---|---|---|
-**Angular SSR** | [`@angular/ssr`](https://npmjs.com/package/@angular/ssr) | [![latest](https://img.shields.io/npm/v/%40angular%2Fssr/latest.svg)](https://npmjs.com/package/@angular/ssr) | [![README](https://img.shields.io/badge/README--green.svg)](/packages/angular/ssr/README.md) [![snapshot](https://img.shields.io/badge/snapshot--blue.svg)](https://github.com/angular/angular-ssr-builds)
-**Architect** | [`@angular-devkit/architect`](https://npmjs.com/package/@angular-devkit/architect) | [![latest](https://img.shields.io/npm/v/%40angular-devkit%2Farchitect/latest.svg)](https://npmjs.com/package/@angular-devkit/architect) | [![README](https://img.shields.io/badge/README--green.svg)](/packages/angular_devkit/architect/README.md) [![snapshot](https://img.shields.io/badge/snapshot--blue.svg)](https://github.com/angular/angular-devkit-architect-builds)
-**Build Angular** | [`@angular-devkit/build-angular`](https://npmjs.com/package/@angular-devkit/build-angular) | [![latest](https://img.shields.io/npm/v/%40angular-devkit%2Fbuild-angular/latest.svg)](https://npmjs.com/package/@angular-devkit/build-angular) | [![README](https://img.shields.io/badge/README--green.svg)](/packages/angular_devkit/build_angular/README.md) [![snapshot](https://img.shields.io/badge/snapshot--blue.svg)](https://github.com/angular/angular-devkit-build-angular-builds)
-**Build Webpack** | [`@angular-devkit/build-webpack`](https://npmjs.com/package/@angular-devkit/build-webpack) | [![latest](https://img.shields.io/npm/v/%40angular-devkit%2Fbuild-webpack/latest.svg)](https://npmjs.com/package/@angular-devkit/build-webpack) | [![README](https://img.shields.io/badge/README--green.svg)](/packages/angular_devkit/build_webpack/README.md) [![snapshot](https://img.shields.io/badge/snapshot--blue.svg)](https://github.com/angular/angular-devkit-build-webpack-builds)
-**Core** | [`@angular-devkit/core`](https://npmjs.com/package/@angular-devkit/core) | [![latest](https://img.shields.io/npm/v/%40angular-devkit%2Fcore/latest.svg)](https://npmjs.com/package/@angular-devkit/core) | [![README](https://img.shields.io/badge/README--green.svg)](/packages/angular_devkit/core/README.md) [![snapshot](https://img.shields.io/badge/snapshot--blue.svg)](https://github.com/angular/angular-devkit-core-builds)
-**Schematics** | [`@angular-devkit/schematics`](https://npmjs.com/package/@angular-devkit/schematics) | [![latest](https://img.shields.io/npm/v/%40angular-devkit%2Fschematics/latest.svg)](https://npmjs.com/package/@angular-devkit/schematics) | [![README](https://img.shields.io/badge/README--green.svg)](/packages/angular_devkit/schematics/README.md) [![snapshot](https://img.shields.io/badge/snapshot--blue.svg)](https://github.com/angular/angular-devkit-schematics-builds)
-
-#### Misc
-
-| Project | Package | Version | Links |
-|---|---|---|---|
-**Angular Create** | [`@angular/create`](https://npmjs.com/package/@angular/create) | [![latest](https://img.shields.io/npm/v/%40angular%2Fcreate/latest.svg)](https://npmjs.com/package/@angular/create) | [![README](https://img.shields.io/badge/README--green.svg)](/packages/angular/create/README.md)
-**Webpack Angular Plugin** | [`@ngtools/webpack`](https://npmjs.com/package/@ngtools/webpack) | [![latest](https://img.shields.io/npm/v/%40ngtools%2Fwebpack/latest.svg)](https://npmjs.com/package/@ngtools/webpack) |  [![snapshot](https://img.shields.io/badge/snapshot--blue.svg)](https://github.com/angular/ngtools-webpack-builds)
-
-#### Schematics
-
-| Project | Package | Version | Links |
-|---|---|---|---|
-**Angular PWA Schematics** | [`@angular/pwa`](https://npmjs.com/package/@angular/pwa) | [![latest](https://img.shields.io/npm/v/%40angular%2Fpwa/latest.svg)](https://npmjs.com/package/@angular/pwa) |  [![snapshot](https://img.shields.io/badge/snapshot--blue.svg)](https://github.com/angular/angular-pwa-builds)
-**Angular Schematics** | [`@schematics/angular`](https://npmjs.com/package/@schematics/angular) | [![latest](https://img.shields.io/npm/v/%40schematics%2Fangular/latest.svg)](https://npmjs.com/package/@schematics/angular) |  [![snapshot](https://img.shields.io/badge/snapshot--blue.svg)](https://github.com/angular/schematics-angular-builds)
-
-
-
-**Love this project? Give our repo a star :star: :arrow_up:.**
-
-[contributing]: CONTRIBUTING.md
-[developer]: docs/DEVELOPER.md
-[quickstart]: CONTRIBUTING.md
-[changelog]: CHANGELOG.md
-[documentation]: CONTRIBUTING.md
-[cli]: CONTRIBUTING.md
-[workspaceconfig]: CONTRIBUTING.md
-[schematics]: CONTRIBUTING.md
-[filestructure]: CONTRIBUTING.md
-[node.js]: https://nodejs.org/
-[npm]: https://www.npmjs.com/get-npm
-[codeofconduct]: https://github.com/john--kane/triangular/blob/main/CODE_OF_CONDUCT.md
