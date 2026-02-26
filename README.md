@@ -16,13 +16,13 @@
   <br>
   <img src="/docs/images/angular-cli-logo.png" alt="Triangular logo" width="100px" height="108px"/>
   <br><br>
-  <em>Triangular is a command-line interface tool that you use to initialize, develop, scaffold,
-    <br>and maintain applications directly from a command shell.</em>
+  <em>Triangular is a Rust-powered command-line interface tool that you use to initialize, develop, scaffold,
+    <br>and maintain applications directly from a command shell with extreme performance.</em>
   <br>
 </p>
 
 <p style="text-align: center">
-  <a href="https://angular.dev/tools/cli"><strong>Documentation</strong></a>
+  <a href="CONTRIBUTING.md"><strong>Documentation</strong></a>
   <br>
 </p>
 
@@ -30,8 +30,6 @@
   <a href="CONTRIBUTING.md">Contributing Guidelines</a>
   ·
   <a href="https://github.com/john--kane/triangular/issues">Submit an Issue</a>
-  ·
-  <a href="https://blog.angular.dev">Blog</a>
   <br>
   <br>
 </p>
@@ -40,7 +38,7 @@
 
 ## Documentation
 
-Get started with Triangular, learn the fundamentals and explore advanced topics on our documentation website.
+Get started with Triangular, learn the fundamentals and explore advanced topics.
 
 - [Getting started][quickstart]
 - [CLI][cli]
@@ -97,7 +95,7 @@ When using the CLI in that project, it will automatically use the local build.
 
 ### Using the 'tri' command
 
-When you install Triangular globally, you can use the `tri` command just like `ng`:
+When you install Triangular globally, you can use the `tri` command.
 
 ```shell
 tri build
@@ -172,28 +170,15 @@ hyperfine --prepare 'rm -rf dist .angular' \
 #### 4. Interpreting Results
 `tri` focuses on speeding up the transpilation phase of the build. In large projects with many TypeScript files, you should see a noticeable decrease in the "Building..." phase of the CLI output.
 
-Triangular is cross-platform, fast, scalable, has incredible tooling, and is loved by many.
+Triangular is a cross-platform, fast, scalable SDK powered by a Rust-based compiler toolchain (OXC). It is designed to be a high-performance alternative to traditional tools.
 
 ## Quickstart
 
 [Get started in 5 minutes][quickstart].
 
-## Ecosystem
-
-<p>
-  <img src="/docs/images/angular-ecosystem-logos.png" alt="ecosystem logos" width="500px" height="auto">
-</p>
-
-- [Framework][adev]
-- [Material][angularmaterial]
-
 ## Changelog
 
 [Learn about the latest improvements][changelog].
-
-## Upgrading
-
-Check out our [upgrade guide](https://update.angular.dev/) to find out the best way to upgrade your project.
 
 ## Contributing
 
@@ -203,7 +188,7 @@ Read through our [contributing guidelines][contributing] to learn about our subm
 
 ### Want to Help?
 
-Want to report a bug, contribute some code, or improve documentation? Excellent! Read up on our guidelines for [contributing][contributing] and then check out one of our issues labeled as <kbd>[help wanted](https://github.com/angular/angular-cli/labels/help%20wanted)</kbd> or <kbd>[good first issue](https://github.com/angular/angular-cli/labels/good%20first%20issue)</kbd>.
+Want to report a bug, contribute some code, or improve documentation? Excellent! Read up on our guidelines for [contributing][contributing] and then check out one of our issues.
 
 ### Code of Conduct
 
@@ -212,18 +197,6 @@ Help us keep the community open and inclusive. Please read and follow our [Code 
 ### Developer Guide
 
 Read through our [developer guide][developer] to learn about how to build and test the CLI locally.
-
-
-## Community
-
-Join the conversation and help the community.
-
-- [X (formerly Twitter)][twitter]
-- [Discord][discord]
-- [Gitter][gitter]
-- [YouTube][youtube]
-- [StackOverflow][stackoverflow]
-- Find a Local [Meetup][meetup]
 
 ## Packages
 
@@ -273,21 +246,13 @@ This is a monorepo which contains many tools and packages:
 
 [contributing]: CONTRIBUTING.md
 [developer]: docs/DEVELOPER.md
-[quickstart]: https://angular.dev/tutorials/learn-angular
+[quickstart]: CONTRIBUTING.md
 [changelog]: CHANGELOG.md
-[documentation]: https://angular.dev/overview
-[angularmaterial]: https://material.angular.dev/
-[cli]: https://angular.dev/tools/cli
-[adev]: https://angular.dev/
-[workspaceconfig]: https://angular.dev/reference/configs/workspace-config
-[schematics]: https://angular.dev/tools/cli/schematics
-[filestructure]: https://angular.dev/reference/configs/file-structure
+[documentation]: CONTRIBUTING.md
+[cli]: CONTRIBUTING.md
+[workspaceconfig]: CONTRIBUTING.md
+[schematics]: CONTRIBUTING.md
+[filestructure]: CONTRIBUTING.md
 [node.js]: https://nodejs.org/
 [npm]: https://www.npmjs.com/get-npm
 [codeofconduct]: https://github.com/john--kane/triangular/blob/main/CODE_OF_CONDUCT.md
-[twitter]: https://www.x.com/angular
-[discord]: https://discord.gg/angular
-[gitter]: https://gitter.im/angular/angular-cli
-[stackoverflow]: https://stackoverflow.com/questions/tagged/angular-cli
-[youtube]: https://youtube.com/angular
-[meetup]: https://www.meetup.com/find/?keywords=angular
