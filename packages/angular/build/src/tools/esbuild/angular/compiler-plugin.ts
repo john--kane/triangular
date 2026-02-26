@@ -21,6 +21,7 @@ import assert from 'node:assert';
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import * as path from 'node:path';
+import { transformSync } from 'oxc-transform';
 import { maxWorkers, useTypeChecking } from '../../../utils/environment-options';
 import { AngularHostOptions } from '../../angular/angular-host';
 import { AngularCompilation, DiagnosticModes, NoopCompilation } from '../../angular/compilation';
@@ -308,10 +309,7 @@ export function createCompilerPlugin(
           shouldTsIgnoreJs = !initializationResult.compilerOptions.allowJs;
           // Isolated modules option ensures safe non-TypeScript transpilation.
           // Typescript printing support for sourcemaps is not yet integrated.
-          useTypeScriptTranspilation =
-            !initializationResult.compilerOptions.isolatedModules ||
-            !!initializationResult.compilerOptions.sourceMap ||
-            !!initializationResult.compilerOptions.inlineSourceMap;
+          useTypeScriptTranspilation = false;
           referencedFiles = initializationResult.referencedFiles;
           externalStylesheets = initializationResult.externalStylesheets;
           if (initializationResult.templateUpdates) {
@@ -461,11 +459,17 @@ export function createCompilerPlugin(
           return {
             errors: [createMissingFileDiagnostic(request, args.path, diangosticRoot, true)],
           };
-        } else if (typeof contents === 'string' && (useTypeScriptTranspilation || isJS)) {
+        } else if (typeof contents === 'string') {
           // A string indicates untransformed output from the TS/NG compiler.
           // This step is unneeded when using esbuild transpilation.
           const sideEffects = await hasSideEffects(request);
           const instrumentForCoverage = pluginOptions.instrumentForCoverage?.(request);
+
+          // Transpile emitted TypeScript to JavaScript using OXC
+          if (request.endsWith('.ts')) {
+            contents = oxcTranspile(request, contents);
+          }
+
           contents = await javascriptTransformer.transformData(
             request,
             contents,
@@ -479,7 +483,7 @@ export function createCompilerPlugin(
         }
 
         let loader: Loader;
-        if (useTypeScriptTranspilation || isJS) {
+        if (typeof contents !== 'string' || isJS) {
           // TypeScript has transpiled to JS or is already JS
           loader = 'js';
         } else if (request.at(-1) === 'x') {
@@ -807,12 +811,41 @@ function createMissingFileDiagnostic(
     });
   }
 
-  const diagnostic = {
+  return {
     text: `File '${relativeRequest}' not found in TypeScript compilation.`,
     notes,
   };
+}
 
-  return diagnostic;
+/**
+ * Transpiles the provided TypeScript or JavaScript content using OXC.
+ *
+ * @param filePath The path of the file being transpiled.
+ * @param content The source content to transpile.
+ * @returns The transpiled JavaScript code.
+ */
+function oxcTranspile(filePath: string, content: string): string {
+  const isTsx = filePath.endsWith('.tsx');
+  const isTs =
+    isTsx || filePath.endsWith('.ts') || filePath.endsWith('.mts') || filePath.endsWith('.cts');
+
+  const result = transformSync(filePath, content, {
+    sourceType: 'module',
+    lang: isTsx ? 'tsx' : isTs ? 'ts' : 'js',
+    assumptions: {
+      noDocumentAll: true,
+      setPublicClassFields: true,
+    },
+    typescript: {
+      removeClassFieldsWithoutInitializer: true,
+    },
+  });
+
+  if (result.errors.length) {
+    throw new Error(result.errors.map((e: { message: string }) => e.message).join('\n'));
+  }
+
+  return result.code;
 }
 
 const POTENTIAL_METADATA_REGEX = /@angular\/core|@Component|@Directive|@Injectable|@Pipe|@NgModule/;

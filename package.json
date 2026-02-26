@@ -1,5 +1,5 @@
 {
-  "name": "@angular/devkit-repo",
+  "name": "triangular",
   "version": "22.0.0-next.0",
   "private": true,
   "description": "Software Development Kit for Angular",
@@ -20,13 +20,13 @@
     "templates": "pnpm -s admin templates",
     "validate": "pnpm -s admin validate",
     "postinstall": "husky",
-    "ts-circular-deps": "ng-dev ts-circular-deps --config ./scripts/circular-deps-test.conf.mjs",
+    "ts-circular-deps": "node --no-warnings=ExperimentalWarning --experimental-transform-types ./node_modules/@angular/ng-dev/bundles/cli.mjs ts-circular-deps --config ./scripts/circular-deps-test.conf.mjs",
     "check-tooling-setup": "tsc --project .ng-dev/tsconfig.json",
-    "diff-release-package": "node scripts/diff-release-package.mts"
+    "diff-release-package": "node --no-warnings=ExperimentalWarning --experimental-transform-types scripts/diff-release-package.mts"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/angular/angular-cli.git"
+    "url": "https://github.com/john--kane/triangular"
   },
   "packageManager": "pnpm@10.30.0",
   "engines": {
@@ -35,12 +35,12 @@
     "yarn": "Please use pnpm instead of Yarn to install dependencies",
     "pnpm": "10.30.0"
   },
-  "author": "Angular Authors",
+  "author": "John Kane",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/angular/angular-cli/issues"
+    "url": "https://github.com/john--kane/triangular/issues"
   },
-  "homepage": "https://github.com/angular/angular-cli",
+  "homepage": "https://github.com/john--kane/triangular",
   "devDependencies": {
     "@angular/animations": "21.2.0-rc.0",
     "@angular/cdk": "21.2.0-rc.0",
@@ -162,5 +162,11 @@
   },
   "resolutions": {
     "undici-types": "^7.16.0"
+  },
+  "dependencies": {
+    "oxc-minify": "^0.114.0",
+    "oxc-parser": "^0.114.0",
+    "oxc-resolver": "^11.18.0",
+    "oxc-transform": "^0.114.0"
   }
 }

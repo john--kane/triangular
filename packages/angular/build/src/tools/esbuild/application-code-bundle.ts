@@ -621,6 +621,7 @@ function getEsBuildCommonOptions(options: NormalizedApplicationBuildOptions): Bu
     minifyIdentifiers: optimizationOptions.scripts && allowMangle,
     minifySyntax: optimizationOptions.scripts,
     minifyWhitespace: optimizationOptions.scripts,
+    treeShaking: true,
     pure: ['forwardRef'],
     outdir: workspaceRoot,
     outExtension: outExtension ? { '.js': `.${outExtension}` } : undefined,

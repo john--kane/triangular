@@ -8,6 +8,7 @@
 
 import remapping, { SourceMapInput } from '@ampproject/remapping';
 import type { BuildFailure, TransformResult } from 'esbuild';
+import { minify as oxcMinify } from 'oxc-minify';
 import { minify } from 'terser';
 import { EsbuildExecutor } from './esbuild-executor';
 
@@ -102,7 +103,7 @@ let esbuild: EsbuildExecutor | undefined;
  */
 export default async function ({ asset, options }: OptimizeRequest) {
   // esbuild is used as a first pass
-  const esbuildResult = await optimizeWithEsbuild(asset.code, asset.name, options);
+  const esbuildResult = await optimizeWithOxc(asset.code, asset.name, options);
   if (isEsBuildFailure(esbuildResult)) {
     return {
       name: asset.name,
@@ -119,7 +120,6 @@ export default async function ({ asset, options }: OptimizeRequest) {
     options.advanced,
   );
 
-  // Merge intermediate sourcemaps with input sourcemap if enabled
   let fullSourcemap;
   if (options.sourcemap) {
     const partialSourcemaps = [];
@@ -140,6 +140,51 @@ export default async function ({ asset, options }: OptimizeRequest) {
   }
 
   return { name: asset.name, code: terserResult.code, map: fullSourcemap };
+}
+
+/**
+ * Optimizes a JavaScript asset using OXC.
+ *
+ * @param content The JavaScript asset source content to optimize.
+ * @param name The name of the JavaScript asset. Used to generate source maps.
+ * @param options The optimization request options to apply to the content.
+ * @returns A promise that resolves with the optimized code, source map, and any warnings.
+ */
+async function optimizeWithOxc(
+  content: string,
+  name: string,
+  options: OptimizeRequestOptions,
+): Promise<TransformResult | BuildFailure> {
+  const minified = await oxcMinify(name, content, {
+    compress: {
+      dropConsole: false,
+      sequences: true,
+      joinVars: true,
+      unused: true,
+      treeshake: {
+        annotations: true,
+        propertyReadSideEffects: false,
+      },
+      target: options.target,
+    },
+    mangle: options.keepIdentifierNames
+      ? false
+      : {
+          toplevel: true,
+        },
+    codegen: {
+      removeWhitespace: true,
+    },
+  });
+
+  return {
+    code: minified.code,
+    map: minified.map ? JSON.stringify(minified.map) : '',
+    warnings: [],
+    errors: [],
+    mangleCache: {},
+    legalComments: '',
+  };
 }
 
 /**

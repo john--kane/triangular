@@ -4,7 +4,8 @@
   "description": "CLI tool for Angular",
   "main": "lib/cli/index.js",
   "bin": {
-    "ng": "./bin/ng.js"
+    "ng": "./bin/ng.js",
+    "tri": "./bin/tri.js"
   },
   "keywords": [
     "angular",

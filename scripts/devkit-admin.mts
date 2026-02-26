@@ -34,11 +34,11 @@ process.chdir(path.join(scriptDir, '..'));
 const originalConsole = { ...console };
 console.warn = function (...args) {
   const [m, ...rest] = args;
-  originalConsole.warn(styleText(['yellow'], m), ...rest);
+  originalConsole.warn(typeof m === 'string' ? styleText(['yellow'], m) : m, ...rest);
 };
 console.error = function (...args) {
   const [m, ...rest] = args;
-  originalConsole.error(styleText(['red'], m), ...rest);
+  originalConsole.error(typeof m === 'string' ? styleText(['red'], m) : m, ...rest);
 };
 
 try {

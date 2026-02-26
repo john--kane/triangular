@@ -218,6 +218,10 @@ export async function optimizeChunks(
   try {
     bundle = await rolldown({
       input: mainFile,
+      optimization: {
+        inlineConst: true,
+      },
+      treeshake: true,
       plugins: [
         {
           name: 'angular-bundle',
@@ -240,19 +244,17 @@ export async function optimizeChunks(
 
             usedChunks.add(id);
 
-            const result = {
+            return {
               code: chunks[id].text,
               map: maps[id]?.text,
             };
-
-            return result;
           },
         },
       ],
     });
 
     const result = await bundle.generate({
-      minify: { mangle: false, compress: false },
+      minify: true,
       sourcemap,
       chunkFileNames: (chunkInfo) => `${chunkInfo.name.replace(/-[a-zA-Z0-9]{8}$/, '')}-[hash].js`,
     });

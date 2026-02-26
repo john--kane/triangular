@@ -82,6 +82,7 @@ export class JavaScriptTransformer {
    * @param filename The full path to the file.
    * @param skipLinker If true, bypass all Angular linker processing; if false, attempt linking.
    * @param sideEffects If false, and `advancedOptimizations` is enabled tslib decorators are wrapped.
+   * @param instrumentForCoverage
    * @returns A promise that resolves to a UTF-8 encoded Uint8Array containing the result.
    */
   async transformFile(
@@ -90,6 +91,23 @@ export class JavaScriptTransformer {
     sideEffects?: boolean,
     instrumentForCoverage?: boolean,
   ): Promise<Uint8Array> {
+    // Perform a quick test to determine if the file needs any transformations.
+    // This allows directly returning the data without the worker communication overhead.
+    if (skipLinker && !this.#commonOptions.advancedOptimizations && !instrumentForCoverage) {
+      const isTs = filename.endsWith('.ts') || filename.endsWith('.tsx');
+      if (!isTs) {
+        const data = await readFile(filename, 'utf-8');
+        const keepSourcemap =
+          this.#commonOptions.sourcemap &&
+          (this.#commonOptions.thirdPartySourcemaps || !/[\\/]node_modules[\\/]/.test(filename));
+
+        return Buffer.from(
+          keepSourcemap ? data : data.replace(/^\/\/# sourceMappingURL=[^\r\n]*/gm, ''),
+          'utf-8',
+        );
+      }
+    }
+
     const data = await readFile(filename);
 
     let result;
@@ -149,6 +167,7 @@ export class JavaScriptTransformer {
    * @param data The data of the file that should be transformed.
    * @param skipLinker If true, bypass all Angular linker processing; if false, attempt linking.
    * @param sideEffects If false, and `advancedOptimizations` is enabled tslib decorators are wrapped.
+   * @param instrumentForCoverage
    * @returns A promise that resolves to a UTF-8 encoded Uint8Array containing the result.
    */
   async transformData(
@@ -161,14 +180,17 @@ export class JavaScriptTransformer {
     // Perform a quick test to determine if the data needs any transformations.
     // This allows directly returning the data without the worker communication overhead.
     if (skipLinker && !this.#commonOptions.advancedOptimizations && !instrumentForCoverage) {
-      const keepSourcemap =
-        this.#commonOptions.sourcemap &&
-        (!!this.#commonOptions.thirdPartySourcemaps || !/[\\/]node_modules[\\/]/.test(filename));
+      const isTs = filename.endsWith('.ts') || filename.endsWith('.tsx');
+      if (!isTs) {
+        const keepSourcemap =
+          this.#commonOptions.sourcemap &&
+          (this.#commonOptions.thirdPartySourcemaps || !/[\\/]node_modules[\\/]/.test(filename));
 
-      return Buffer.from(
-        keepSourcemap ? data : data.replace(/^\/\/# sourceMappingURL=[^\r\n]*/gm, ''),
-        'utf-8',
-      );
+        return Buffer.from(
+          keepSourcemap ? data : data.replace(/^\/\/# sourceMappingURL=[^\r\n]*/gm, ''),
+          'utf-8',
+        );
+      }
     }
 
     return this.#ensureWorkerPool().run({

@@ -9,6 +9,7 @@
 import { type PluginItem, transformAsync } from '@babel/core';
 import fs from 'node:fs';
 import path from 'node:path';
+import { transformSync } from 'oxc-transform';
 import Piscina from 'piscina';
 
 interface JavaScriptTransformRequest {
@@ -40,10 +41,39 @@ export default async function transformJavaScript(
   const { filename, data, ...options } = request;
   const textData = typeof data === 'string' ? data : textDecoder.decode(data);
 
-  const transformedData = await transformWithBabel(filename, textData, options);
+  const transformedData = await transformWithOxc(filename, textData, options);
 
   // Transfer the data via `move` instead of cloning
   return Piscina.move(textEncoder.encode(transformedData));
+}
+
+async function transformWithOxc(
+  filename: string,
+  data: string,
+  options: Omit<JavaScriptTransformRequest, 'filename' | 'data'>,
+): Promise<string> {
+  const isTs = filename.endsWith('.ts') || filename.endsWith('.tsx');
+
+  let currentCode = data;
+
+  if (isTs) {
+    const result = transformSync(filename, currentCode, {
+      sourceType: 'module',
+      lang: filename.endsWith('tsx') ? 'tsx' : 'ts',
+      assumptions: {
+        noDocumentAll: true,
+        pureGetters: options.advancedOptimizations,
+        setPublicClassFields: true,
+      },
+      typescript: {
+        removeClassFieldsWithoutInitializer: true,
+        rewriteImportExtensions: 'rewrite',
+      },
+    });
+    currentCode = result.code;
+  }
+
+  return transformWithBabel(filename, currentCode, options);
 }
 
 /**
@@ -60,8 +90,7 @@ async function transformWithBabel(
 ): Promise<string> {
   const shouldLink = !options.skipLinker && (await requiresLinking(filename, data));
   const useInputSourcemap =
-    options.sourcemap &&
-    (!!options.thirdPartySourcemaps || !/[\\/]node_modules[\\/]/.test(filename));
+    options.sourcemap && (options.thirdPartySourcemaps || !/[\\/]node_modules[\\/]/.test(filename));
 
   const plugins: PluginItem[] = [];
 
@@ -95,7 +124,11 @@ async function transformWithBabel(
   // If no additional transformations are needed, return the data directly
   if (plugins.length === 0) {
     // Strip sourcemaps if they should not be used
-    return useInputSourcemap ? data : data.replace(/^\/\/# sourceMappingURL=[^\r\n]*/gm, '');
+    if (!useInputSourcemap) {
+      return data.replace(/^\/\/# sourceMappingURL=[^\r\n]*/gm, '');
+    }
+
+    return data;
   }
 
   const result = await transformAsync(data, {
@@ -135,7 +168,7 @@ async function createLinkerPlugin(options: Omit<JavaScriptTransformRequest, 'fil
   linkerPluginCreator ??= (await import('@angular/compiler-cli/linker/babel'))
     .createEs2015LinkerPlugin;
 
-  const linkerPlugin = linkerPluginCreator({
+  return linkerPluginCreator({
     linkerJitMode: options.jit,
     // This is a workaround until https://github.com/angular/angular/issues/42769 is fixed.
     sourceMapping: false,
@@ -168,6 +201,4 @@ async function createLinkerPlugin(options: Omit<JavaScriptTransformRequest, 'fil
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any,
   });
-
-  return linkerPlugin;
 }

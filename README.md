@@ -76,6 +76,117 @@ cd [PROJECT NAME]
 ng serve
 ```
 
+### Testing Local Changes
+
+If you are contributing to this repository and want to test your changes against an Angular project, you can build the CLI locally and install it in your project.
+
+To make a local build:
+
+```shell
+pnpm build --local
+```
+
+This generates tarballs in the `dist/` directory. To use these locally built tools in another repository, install the generated packages:
+
+```shell
+cd path/to/example-project
+npm install -D path/to/angular-cli/dist/*.tgz
+```
+
+When using the CLI in that project, it will automatically use the local build.
+
+### Using the name 'triangular'
+
+If you want to call the local build as `triangular` instead of `ng`, you have a few options:
+
+#### 1. Using an Alias
+After installing the local tarballs in your project as described above, you can create a shell alias:
+```shell
+alias triangular='npx ng'
+triangular build
+```
+
+#### 2. Running the local binary directly
+You can also invoke the locally built CLI directly without installing it into a project:
+```shell
+node path/to/triangular/dist/@angular/cli/bin/ng.js build
+```
+
+#### 3. Global Alias
+To use `triangular` globally, you can add the alias to your shell profile (e.g., `.zshrc` or `.bashrc`):
+```shell
+alias triangular='node path/to/triangular/dist/@angular/cli/bin/ng.js'
+```
+
+### Verifying against Official Angular
+
+To verify your local changes against the official Angular CLI, you can compare the output of a build using your local CLI with one using the official version.
+
+1. **Create a baseline build:**
+   In your example project, ensure you are using the official Angular CLI version (e.g., from npm) and run a build:
+   ```shell
+   # Using official @angular/cli
+   npm install @angular/cli@latest
+   npm run build
+   mv dist dist-official
+   ```
+
+2. **Create a comparison build:**
+   Install your local build tarballs as described above and run the build again:
+   ```shell
+   # Using local built @angular/cli
+   npm install -D path/to/angular-cli/dist/*.tgz
+   npm run build
+   mv dist dist-local
+   ```
+
+3. **Compare the results:**
+   You can now compare the two directories to see the differences in the generated bundles:
+   ```shell
+   diff -r dist-official dist-local
+   ```
+   Note: Some differences are expected due to timestamps, randomly generated hashes, or minor version differences in dependencies. Focus on the actual JavaScript content changes.
+   
+### Benchmarking `triangular` vs Angular CLI
+
+To benchmark the performance improvements of `triangular` (OXC-based) against the official Angular CLI, you can follow these steps.
+
+#### 1. Prepare your environment
+Ensure you have an Angular project to test with. For consistent results, it is recommended to run benchmarks on a "cold" build (after removing `dist` and `.angular` folders).
+
+#### 2. Simple Benchmarking using `time`
+You can use the built-in `time` command to get basic timing information.
+
+**Baseline (Official):**
+```shell
+# Ensure official CLI is installed
+npm install @angular/cli@latest
+rm -rf dist .angular
+time npx ng build
+```
+
+**Comparison (Triangular):**
+```shell
+# Ensure local triangular builds are installed
+npm install -D path/to/angular-cli/dist/*.tgz
+rm -rf dist .angular
+time npx ng build
+```
+
+#### 3. Advanced Benchmarking using `hyperfine`
+For more accurate and statistically significant results, we recommend using [hyperfine](https://github.com/sharkdp/hyperfine).
+
+First, create two separate directories or use a way to switch between versions easily. A good approach is to have two identical projects: `project-official` and `project-triangular`.
+
+```shell
+hyperfine --prepare 'rm -rf dist .angular' \
+  --name "Official Angular CLI" "cd project-official && npx ng build" \
+  --name "Triangular (OXC)" "cd project-triangular && npx ng build"
+```
+
+#### 4. Interpreting Results
+`triangular` focuses on speeding up the transpilation phase of the build. In large projects with many TypeScript files, you should see a noticeable decrease in the "Building..." phase of the Angular CLI output.
+
 Angular is cross-platform, fast, scalable, has incredible tooling, and is loved by millions.
 
 ## Quickstart
