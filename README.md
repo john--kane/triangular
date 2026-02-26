@@ -10,26 +10,26 @@
   Any changes to README.md directly will result in a failure on CI.
 -->
 
-<h1 style="text-align: center">Angular CLI - The CLI tool for Angular.</h1>
+<h1 style="text-align: center">Triangular - The CLI tool for web developers.</h1>
 
 <p style="text-align: center">
   <br>
-  <img src="/docs/images/angular-cli-logo.png" alt="Angular CLI logo" width="100px" height="108px"/>
+  <img src="/docs/images/angular-cli-logo.png" alt="Triangular logo" width="100px" height="108px"/>
   <br><br>
-  <em>The Angular CLI is a command-line interface tool that you use to initialize, develop, scaffold,
-    <br>and maintain Angular applications directly from a command shell.</em>
+  <em>Triangular is a command-line interface tool that you use to initialize, develop, scaffold,
+    <br>and maintain applications directly from a command shell.</em>
   <br>
 </p>
 
 <p style="text-align: center">
-  <a href="https://angular.dev/tools/cli"><strong>angular.dev/tools/cli</strong></a>
+  <a href="https://angular.dev/tools/cli"><strong>Documentation</strong></a>
   <br>
 </p>
 
 <p style="text-align: center">
   <a href="CONTRIBUTING.md">Contributing Guidelines</a>
   ·
-  <a href="https://github.com/angular/angular-cli/issues">Submit an Issue</a>
+  <a href="https://github.com/john--kane/triangular/issues">Submit an Issue</a>
   ·
   <a href="https://blog.angular.dev">Blog</a>
   <br>
@@ -40,7 +40,7 @@
 
 ## Documentation
 
-Get started with Angular CLI, learn the fundamentals and explore advanced topics on our documentation website.
+Get started with Triangular, learn the fundamentals and explore advanced topics on our documentation website.
 
 - [Getting started][quickstart]
 - [CLI][cli]
@@ -57,28 +57,28 @@ Get started with Angular CLI, learn the fundamentals and explore advanced topics
 
 ### Setting Up a Project
 
-Install the Angular CLI globally:
+Install Triangular globally:
 
 ```
-npm install -g @angular/cli
+npm install -g triangular
 ```
 
 Create workspace:
 
 ```
-ng new [PROJECT NAME]
+tri new [PROJECT NAME]
 ```
 
 Run the application:
 
 ```
 cd [PROJECT NAME]
-ng serve
+tri serve
 ```
 
 ### Testing Local Changes
 
-If you are contributing to this repository and want to test your changes against an Angular project, you can build the CLI locally and install it in your project.
+If you are contributing to this repository and want to test your changes, you can build the CLI locally and install it in your project.
 
 To make a local build:
 
@@ -90,42 +90,27 @@ This generates tarballs in the `dist/` directory. To use these locally built too
 
 ```shell
 cd path/to/example-project
-npm install -D path/to/angular-cli/dist/*.tgz
+npm install -D path/to/triangular/dist/*.tgz
 ```
 
 When using the CLI in that project, it will automatically use the local build.
 
-### Using the name 'triangular'
+### Using the 'tri' command
 
-If you want to call the local build as `triangular` instead of `ng`, you have a few options:
+When you install Triangular globally, you can use the `tri` command just like `ng`:
 
-#### 1. Using an Alias
-After installing the local tarballs in your project as described above, you can create a shell alias:
 ```shell
-alias triangular='npx ng'
-triangular build
+tri build
 ```
 
-#### 2. Running the local binary directly
-You can also invoke the locally built CLI directly without installing it into a project:
-```shell
-node path/to/triangular/dist/@angular/cli/bin/ng.js build
-```
+### Verifying against Official Tools
 
-#### 3. Global Alias
-To use `triangular` globally, you can add the alias to your shell profile (e.g., `.zshrc` or `.bashrc`):
-```shell
-alias triangular='node path/to/triangular/dist/@angular/cli/bin/ng.js'
-```
-
-### Verifying against Official Angular
-
-To verify your local changes against the official Angular CLI, you can compare the output of a build using your local CLI with one using the official version.
+To verify your local changes, you can compare the output of a build using your local CLI with one using the official version.
 
 1. **Create a baseline build:**
-   In your example project, ensure you are using the official Angular CLI version (e.g., from npm) and run a build:
+   In your example project, ensure you are using the official version (e.g., from npm) and run a build:
    ```shell
-   # Using official @angular/cli
+   # Using official package
    npm install @angular/cli@latest
    npm run build
    mv dist dist-official
@@ -147,12 +132,12 @@ To verify your local changes against the official Angular CLI, you can compare t
    ```
    Note: Some differences are expected due to timestamps, randomly generated hashes, or minor version differences in dependencies. Focus on the actual JavaScript content changes.
    
-### Benchmarking `triangular` vs Angular CLI
+### Benchmarking `tri` vs Others
 
-To benchmark the performance improvements of `triangular` (OXC-based) against the official Angular CLI, you can follow these steps.
+To benchmark the performance improvements of `tri` (OXC-based) against official tools, you can follow these steps.
 
 #### 1. Prepare your environment
-Ensure you have an Angular project to test with. For consistent results, it is recommended to run benchmarks on a "cold" build (after removing `dist` and `.angular` folders).
+Ensure you have a project to test with. For consistent results, it is recommended to run benchmarks on a "cold" build (after removing `dist` and `.angular` folders).
 
 #### 2. Simple Benchmarking using `time`
 You can use the built-in `time` command to get basic timing information.
@@ -165,10 +150,10 @@ rm -rf dist .angular
 time npx ng build
 ```
 
-**Comparison (Triangular):**
+**Comparison (Tri):**
 ```shell
 # Ensure local triangular builds are installed
-npm install -D path/to/angular-cli/dist/*.tgz
+npm install -D path/to/triangular/dist/*.tgz
 rm -rf dist .angular
 time npx ng build
 ```
@@ -180,14 +165,14 @@ First, create two separate directories or use a way to switch between versions e
 
 ```shell
 hyperfine --prepare 'rm -rf dist .angular' \
-  --name "Official Angular CLI" "cd project-official && npx ng build" \
+  --name "Official CLI" "cd project-official && npx ng build" \
   --name "Triangular (OXC)" "cd project-triangular && npx ng build"
 ```
 
 #### 4. Interpreting Results
-`triangular` focuses on speeding up the transpilation phase of the build. In large projects with many TypeScript files, you should see a noticeable decrease in the "Building..." phase of the Angular CLI output.
+`tri` focuses on speeding up the transpilation phase of the build. In large projects with many TypeScript files, you should see a noticeable decrease in the "Building..." phase of the CLI output.
 
-Angular is cross-platform, fast, scalable, has incredible tooling, and is loved by millions.
+Triangular is cross-platform, fast, scalable, has incredible tooling, and is loved by many.
 
 ## Quickstart
 
@@ -196,11 +181,11 @@ Angular is cross-platform, fast, scalable, has incredible tooling, and is loved 
 ## Ecosystem
 
 <p>
-  <img src="/docs/images/angular-ecosystem-logos.png" alt="angular ecosystem logos" width="500px" height="auto">
+  <img src="/docs/images/angular-ecosystem-logos.png" alt="ecosystem logos" width="500px" height="auto">
 </p>
 
-- [Angular Framework][adev]
-- [Angular Material][angularmaterial]
+- [Framework][adev]
+- [Material][angularmaterial]
 
 ## Changelog
 
@@ -222,11 +207,11 @@ Want to report a bug, contribute some code, or improve documentation? Excellent!
 
 ### Code of Conduct
 
-Help us keep Angular open and inclusive. Please read and follow our [Code of Conduct][codeofconduct].
+Help us keep the community open and inclusive. Please read and follow our [Code of Conduct][codeofconduct].
 
 ### Developer Guide
 
-Read through our [developer guide][developer] to learn about how to build and test the Angular CLI locally.
+Read through our [developer guide][developer] to learn about how to build and test the CLI locally.
 
 
 ## Community
@@ -284,7 +269,7 @@ This is a monorepo which contains many tools and packages:
 
 
 
-**Love Angular CLI? Give our repo a star :star: :arrow_up:.**
+**Love this project? Give our repo a star :star: :arrow_up:.**
 
 [contributing]: CONTRIBUTING.md
 [developer]: docs/DEVELOPER.md
@@ -299,7 +284,7 @@ This is a monorepo which contains many tools and packages:
 [filestructure]: https://angular.dev/reference/configs/file-structure
 [node.js]: https://nodejs.org/
 [npm]: https://www.npmjs.com/get-npm
-[codeofconduct]: https://github.com/angular/angular/blob/main/CODE_OF_CONDUCT.md
+[codeofconduct]: https://github.com/john--kane/triangular/blob/main/CODE_OF_CONDUCT.md
 [twitter]: https://www.x.com/angular
 [discord]: https://discord.gg/angular
 [gitter]: https://gitter.im/angular/angular-cli
